@@ -32,7 +32,6 @@ class ChannelJoinListener extends discord_akairo_1.Listener {
                         type: "voice",
                     })
                         .then((newChannel) => {
-                        console.log(newChannel.name);
                         newState
                             .setChannel(newChannel.id, "New temporary channel")
                             .catch((_) => newChannel.delete())
