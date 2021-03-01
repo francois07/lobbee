@@ -1,6 +1,5 @@
 import { Model } from "mongoose";
 import { Collection } from "discord.js";
-import Lobby from "../models/Lobby";
 
 export default class MongooseProvider {
   public model: Model<any>;

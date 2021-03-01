@@ -27,7 +27,7 @@ class MongooseProvider {
         var _a, _b;
         if (this.items.has(id)) {
             const value = (_b = (_a = this.items.get(id)) === null || _a === void 0 ? void 0 : _a[category]) === null || _b === void 0 ? void 0 : _b[key];
-            return value == null ? defaultValue : value;
+            return value || defaultValue;
         }
         return defaultValue;
     }

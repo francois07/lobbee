@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BotClient = void 0;
 const discord_akairo_1 = require("discord-akairo");
 const CustomMongooseProvider_1 = __importDefault(require("../providers/CustomMongooseProvider"));
 class BotClient extends discord_akairo_1.AkairoClient {
@@ -45,4 +46,4 @@ class BotClient extends discord_akairo_1.AkairoClient {
         });
     }
 }
-exports.default = BotClient;
+exports.BotClient = BotClient;

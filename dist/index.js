@@ -1,18 +1,14 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-require("dotenv").config({ path: __dirname + "/.env" });
 const mongoose = require("mongoose");
 const path_1 = require("path");
-const BotClient_1 = __importDefault(require("./client/BotClient"));
-const Lobby_1 = __importDefault(require("./models/Lobby"));
-const client = new BotClient_1.default({
+const BotClient_1 = require("./client/BotClient");
+const Lobby_1 = require("./models/Lobby");
+const client = new BotClient_1.BotClient({
     commandOptions: { directory: path_1.join(__dirname, "commands") },
     listenerOptions: { directory: path_1.join(__dirname, "listeners") },
     prefix: "%",
-    model: Lobby_1.default,
+    model: Lobby_1.Lobby,
 }, { ownerID: process.env.OWNER_ID }, { disableMentions: "everyone" });
 mongoose
     .connect(process.env.DB_URI, {
