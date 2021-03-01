@@ -30,7 +30,6 @@ export default class ChannelJoinListener extends Listener {
             type: "voice",
           })
           .then((newChannel) => {
-            console.log(newChannel.name);
             newState
               .setChannel(newChannel.id, "New temporary channel")
               .catch((_) => newChannel.delete())
