@@ -2,8 +2,9 @@ import { Schema, model } from "mongoose";
 
 export interface LobbyObject {
   creationName: string;
-  creationUserLimit?: number;
   creationParent?: string;
+  creationUserLimit?: number;
+  creationChannelLimit?: number;
 }
 
 const lobbySchema = new Schema(

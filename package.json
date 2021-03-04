@@ -11,15 +11,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "tsc && rm -v -rf",
     "start": "node dist/index.js",
-    "tsbuild": "rmdir /Q /S dist && tsc && cpx \"src/.env\" dist"
+    "tsbuild": "rmdir /Q /S dist && tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/validator": "^13.1.3",
     "discord-akairo": "^8.1.0",
     "discord.js": "^12.5.1",
-    "mongoose": "^5.11.15"
+    "mongoose": "^5.11.15",
+    "validator": "^13.5.2"
   },
   "devDependencies": {
     "@types/node": "^14.14.31",
