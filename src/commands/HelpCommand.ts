@@ -24,7 +24,7 @@ export default class HelpCommand extends Command {
 
   private getSpecificCommandEmbed(commandName: string): MessageEmbed {
     const command = this.client.commandHandler.findCommand(commandName) || null;
-    if (command) {
+    if (command && command.categoryID !== "Private") {
       return new MessageEmbed()
         .setTitle(`About ${command.id}`)
         .setDescription(command.description.content)
@@ -50,14 +50,16 @@ export default class HelpCommand extends Command {
       .setDescription(
         `Need some support? [Join the discord server](https://discord.gg/cUqkP7RNdF)`
       );
-    this.client.commandHandler.modules.forEach((command) =>
-      embed.addField(
-        command.id.toUpperCase(),
-        command.description.content +
-          "\n" +
-          `__Usage__ \`\`${command.description.usage}\`\``
-      )
-    );
+    this.client.commandHandler.modules
+      .filter((m) => m.categoryID !== "Private")
+      .forEach((command) =>
+        embed.addField(
+          command.id.toUpperCase(),
+          command.description.content +
+            "\n" +
+            `__Usage__ \`\`${command.description.usage}\`\``
+        )
+      );
     return embed;
   }
 

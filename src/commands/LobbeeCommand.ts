@@ -6,7 +6,7 @@ export default class LobbeeCommand extends Command {
   constructor() {
     super("lobbee", {
       aliases: ["lobbee", "lobby"],
-      category: "Lobby",
+      category: "Public",
       channel: "guild",
       description: {
         content:
