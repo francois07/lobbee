@@ -41,7 +41,9 @@ export default class ChannelJoinListener extends Listener {
       this.client.tempChannels.includes(channel.id) &&
       channel!.members.size < 1
     ) {
-      await channel.delete("Empty temporary channel");
+      await channel.delete("Empty temporary channel").catch((e) => {
+        throw e;
+      });
     }
   }
 
