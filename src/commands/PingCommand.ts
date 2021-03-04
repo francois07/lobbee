@@ -1,4 +1,5 @@
 import { Command } from "discord-akairo";
+import { MessageEmbed } from "discord.js";
 import { Message } from "discord.js";
 
 export default class PingCommand extends Command {
@@ -6,6 +7,7 @@ export default class PingCommand extends Command {
     super("ping", {
       aliases: ["ping"],
       category: "Public",
+      clientPermissions: ["SEND_MESSAGES"],
       description: {
         content: "The basic ping command",
         usage: "ping",
@@ -15,7 +17,9 @@ export default class PingCommand extends Command {
     });
   }
 
-  public exec(message: Message): Promise<Message> {
-    return message.channel.send(`Pong! ${this.client.ws.ping}ms`);
+  public exec(message: Message): MessageEmbed {
+    return new MessageEmbed().setDescription(
+      `🏓 Pong! ${this.client.ws.ping}ms`
+    );
   }
 }
