@@ -12,7 +12,9 @@ import CustomMongooseProvider from "../providers/CustomMongooseProvider";
 
 declare module "discord-akairo" {
   interface AkairoClient {
+    commandHandler: CommandHandler;
     lobbies: CustomMongooseProvider;
+    tempChannels: Array<string>;
   }
 }
 
@@ -34,7 +36,8 @@ interface BotOptions {
 export class BotClient extends AkairoClient {
   public botOptions: BotOptions;
   public lobbies: CustomMongooseProvider;
-  protected commandHandler: CommandHandler;
+  public tempChannels: Array<string>;
+  public commandHandler: CommandHandler;
   protected listenerHandler: ListenerHandler;
 
   public constructor(
@@ -43,15 +46,21 @@ export class BotClient extends AkairoClient {
     discordjsOptions?: ClientOptions | undefined
   ) {
     super(akairoOptions, discordjsOptions);
+
     this.botOptions = botOptions;
+
     this.commandHandler = new CommandHandler(this, {
       directory: botOptions.commandOptions.directory,
-      prefix: botOptions.prefix || "!",
+      prefix: botOptions.prefix || "%",
+      defaultCooldown: 5e3,
     });
+
     this.listenerHandler = new ListenerHandler(this, {
       directory: botOptions.listenerOptions.directory,
     });
+
     this.lobbies = new CustomMongooseProvider(botOptions.model);
+    this.tempChannels = [];
   }
 
   private init(): void {
