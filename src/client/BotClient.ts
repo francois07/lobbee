@@ -7,14 +7,15 @@ import {
   AkairoHandlerOptions,
 } from "discord-akairo";
 import { ClientOptions } from "discord.js";
-import { Model } from "mongoose";
 import CustomMongooseProvider from "../providers/CustomMongooseProvider";
+import { Lobby } from "../models/Lobby";
+import { TemporaryChannel } from "../models/TemporaryChannel";
 
 declare module "discord-akairo" {
   interface AkairoClient {
     commandHandler: CommandHandler;
     lobbies: CustomMongooseProvider;
-    tempChannels: Array<string>;
+    tempChannels: CustomMongooseProvider;
   }
 }
 
@@ -30,13 +31,12 @@ interface BotOptions {
   commandOptions: CommandOptions;
   listenerOptions: listenerOptions;
   prefix?: string;
-  model: Model<any>;
 }
 
 export class BotClient extends AkairoClient {
   public botOptions: BotOptions;
   public lobbies: CustomMongooseProvider;
-  public tempChannels: Array<string>;
+  public tempChannels: CustomMongooseProvider;
   public commandHandler: CommandHandler;
   protected listenerHandler: ListenerHandler;
 
@@ -59,8 +59,11 @@ export class BotClient extends AkairoClient {
       directory: botOptions.listenerOptions.directory,
     });
 
-    this.lobbies = new CustomMongooseProvider(botOptions.model);
-    this.tempChannels = [];
+    this.lobbies = new CustomMongooseProvider(Lobby, "lobbies");
+    this.tempChannels = new CustomMongooseProvider(
+      TemporaryChannel,
+      "tempChannels"
+    );
   }
 
   private init(): void {

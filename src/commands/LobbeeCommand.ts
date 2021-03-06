@@ -109,16 +109,11 @@ export default class LobbeeCommand extends Command {
           `\`\`${args.parentId}\`\` is not a valid lobby name 😔\nPlease make sure that the name length is between \`\`1\`\` and \`\`50\`\``
         );
 
-      await this.client.lobbies.set(
-        message.guild!.id,
-        "lobbies",
-        args.channelId,
-        {
-          creationName: args.creationName,
-          creationParent: args.parentId,
-          creationUserLimit: args.userLimit,
-        }
-      );
+      await this.client.lobbies.set(message.guild!.id, args.channelId, {
+        creationName: args.creationName,
+        creationParent: args.parentId,
+        creationUserLimit: args.userLimit,
+      });
 
       const channelName = await message.guild!.channels.resolve(args.channelId)
         ?.name;

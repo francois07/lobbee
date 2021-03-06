@@ -1,6 +1,7 @@
 import { Listener } from "discord-akairo";
 import { VoiceState } from "discord.js";
 import { LobbyObject } from "../models/Lobby";
+import { TemporaryChannelObject } from "../models/TemporaryChannel";
 
 export default class ChannelJoinListener extends Listener {
   public constructor() {
@@ -16,7 +17,6 @@ export default class ChannelJoinListener extends Listener {
     if (!channel) return;
     const channelData: LobbyObject = await this.client.lobbies.get(
       channel.guild.id,
-      "lobbies",
       channel.id,
       undefined
     );
@@ -30,17 +30,21 @@ export default class ChannelJoinListener extends Listener {
         }
       );
       await state.setChannel(newChannel.id, "New temporary channel");
-      this.client.tempChannels.push(newChannel.id);
+      await this.client.tempChannels.set(channel.guild.id, newChannel.id, {
+        creatorId: channel.id,
+      });
     }
   }
 
   private async handleOldState(state: VoiceState): Promise<void> {
     const channel = state.channel;
     if (!channel) return;
-    if (
-      this.client.tempChannels.includes(channel.id) &&
-      channel!.members.size < 1
-    ) {
+    const channelData: TemporaryChannelObject = await this.client.tempChannels.get(
+      channel.guild.id,
+      channel.id,
+      undefined
+    );
+    if (channelData && channel.members.size < 1) {
       await channel.delete("Empty temporary channel").catch((e) => {
         throw e;
       });

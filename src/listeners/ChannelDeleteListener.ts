@@ -1,5 +1,6 @@
 import { Listener } from "discord-akairo";
 import { DMChannel, GuildChannel } from "discord.js";
+import { TemporaryChannelObject } from "../models/TemporaryChannel";
 
 export default class ChannelDeleteListener extends Listener {
   public constructor() {
@@ -12,20 +13,21 @@ export default class ChannelDeleteListener extends Listener {
 
   public exec(channel: DMChannel | GuildChannel): void {
     if (channel.type !== "voice") return;
-    if (this.client.tempChannels.includes(channel.id)) {
-      this.client.tempChannels = this.client.tempChannels.filter(
-        (c) => c !== channel.id
-      );
-    } else {
-      const creatorChannel = this.client.lobbies.get(
-        channel.guild.id,
-        "lobbies",
-        channel.id,
-        undefined
-      );
-      if (creatorChannel) {
-        this.client.lobbies.delete(channel.guild.id, "lobbies", channel.id);
-      }
+    const tempChannel: TemporaryChannelObject = this.client.tempChannels.get(
+      channel.guild.id,
+      channel.id,
+      undefined
+    );
+    const creatorChannel = this.client.lobbies.get(
+      channel.guild.id,
+      channel.id,
+      undefined
+    );
+    if (tempChannel) {
+      this.client.tempChannels.delete(channel.guild.id, channel.id);
+    }
+    if (creatorChannel) {
+      this.client.lobbies.delete(channel.guild.id, channel.id);
     }
   }
 }

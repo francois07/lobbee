@@ -1,13 +1,12 @@
 import { Model } from "mongoose";
-import { Collection } from "discord.js";
+import { MongooseProvider } from "discord-akairo";
 
-export default class MongooseProvider {
-  public model: Model<any>;
-  public items: Collection<string, any>;
+export default class CustomMongooseProvider extends MongooseProvider {
+  public document: string;
 
-  constructor(model: Model<any>) {
-    this.model = model;
-    this.items = new Collection();
+  constructor(model: Model<any>, document: string) {
+    super(model);
+    this.document = document;
   }
 
   public async init() {
@@ -17,33 +16,33 @@ export default class MongooseProvider {
     }
   }
 
-  public get(id: string, category: string, key: string, defaultValue: any) {
+  public get(id: string, key: string, defaultValue: any) {
     if (this.items.has(id)) {
-      const value = this.items.get(id)?.[category]?.[key];
+      const value = this.items.get(id)?.[this.document]?.[key];
       return value || defaultValue;
     }
 
     return defaultValue;
   }
 
-  public async set(id: string, category: string, key: string, value: any) {
-    const data = this.items.get(id) || { [category]: {} };
-    data[category][key] = value;
+  public async set(id: string, key: string, value: any) {
+    const data = this.items.get(id) || { [this.document]: {} };
+    data[this.document][key] = value;
     this.items.set(id, data);
 
     const doc = await this.getDocument(id);
-    doc[category][key] = value;
-    doc.markModified(category);
+    doc[this.document][key] = value;
+    doc.markModified(this.document);
     return doc.save();
   }
 
-  async delete(id: string, category: string, key: string) {
-    const data = this.items.get(id)?.[category] || {};
+  async delete(id: string, key: string) {
+    const data = this.items.get(id)?.[this.document] || {};
     delete data[key];
 
     const doc = await this.getDocument(id);
-    delete doc[category][key];
-    doc.markModified(category);
+    delete doc[this.document][key];
+    doc.markModified(this.document);
     return doc.save();
   }
 
