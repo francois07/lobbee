@@ -23,7 +23,7 @@ export default class CommandFinishedListener extends Listener {
         .send(
           returnValue
             .setFooter(
-              "Want to add me to you server? https://top.gg/bot/815728329188573204"
+              "Want me on your server? https://top.gg/bot/815728329188573204"
             )
             .setColor(0x9c7bd4)
         )

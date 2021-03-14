@@ -15,7 +15,7 @@ export default class ChannelJoinListener extends Listener {
   private async handleNewState(state: VoiceState): Promise<void> {
     const channel = state.channel;
     if (!channel) return;
-    const channelData: LobbyObject = await this.client.lobbies.get(
+    const channelData: LobbyObject | undefined = await this.client.lobbies.get(
       channel.guild.id,
       channel.id,
       undefined
@@ -29,17 +29,24 @@ export default class ChannelJoinListener extends Listener {
           type: "voice",
         }
       );
-      await state.setChannel(newChannel.id, "New temporary channel");
-      await this.client.tempChannels.set(channel.guild.id, newChannel.id, {
-        creatorId: channel.id,
-      });
+      try {
+        await state.setChannel(newChannel.id, "New temporary channel");
+        await this.client.tempChannels.set(channel.guild.id, newChannel.id, {
+          creatorId: channel.id,
+        });
+      } catch (e) {
+        newChannel.delete("Error");
+        throw new Error("Error when creating temporary channel");
+      }
     }
   }
 
   private async handleOldState(state: VoiceState): Promise<void> {
     const channel = state.channel;
     if (!channel) return;
-    const channelData: TemporaryChannelObject = await this.client.tempChannels.get(
+    const channelData:
+      | TemporaryChannelObject
+      | undefined = await this.client.tempChannels.get(
       channel.guild.id,
       channel.id,
       undefined
