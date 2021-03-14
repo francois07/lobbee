@@ -25,6 +25,10 @@ export default class CustomMongooseProvider extends MongooseProvider {
     return defaultValue;
   }
 
+  public getAll(id: string): any | undefined {
+    return this.items.get(id)?.[this.document];
+  }
+
   public async set(id: string, key: string, value: any) {
     const data = this.items.get(id) || { [this.document]: {} };
     data[this.document][key] = value;
