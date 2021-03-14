@@ -80,6 +80,7 @@ export class BotClient extends AkairoClient {
 
   public async start(token: string | undefined): Promise<string> {
     await this.lobbies.init();
+    await this.tempChannels.init();
     await this.init();
     return this.login(token);
   }
