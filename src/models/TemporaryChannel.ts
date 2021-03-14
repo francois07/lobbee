@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import { Channel } from "discord.js";
 
 export interface TemporaryChannelObject {
   creatorId: string;
