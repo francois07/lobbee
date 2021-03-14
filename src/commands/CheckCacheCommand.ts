@@ -1,6 +1,5 @@
 import { Command } from "discord-akairo";
 import { Message } from "discord.js";
-import { TemporaryChannel } from "../models/TemporaryChannel";
 
 export default class CheckCacheCommand extends Command {
   public constructor() {
@@ -14,7 +13,9 @@ export default class CheckCacheCommand extends Command {
   }
 
   public async exec(message: Message): Promise<void> {
-    const tempChannels = await TemporaryChannel.find({ id: message.guild!.id });
+    const tempChannels = await this.client.tempChannels.getAll(
+      message.guild!.id
+    );
     console.log(tempChannels);
   }
 }
