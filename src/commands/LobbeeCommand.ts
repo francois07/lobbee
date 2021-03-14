@@ -19,7 +19,7 @@ export default class LobbeeCommand extends Command {
           'lobby 768833379499114516 "Lounge" parent:804912642573598781',
         ],
       },
-      clientPermissions: ["MANAGE_CHANNELS", "MOVE_MEMBERS"],
+      clientPermissions: ["MANAGE_CHANNELS", "MOVE_MEMBERS", "SEND_MESSAGES"],
       userPermissions: ["MANAGE_CHANNELS"],
       args: [
         {
@@ -106,7 +106,7 @@ export default class LobbeeCommand extends Command {
 
       if (!isValidCreationName)
         throw new Error(
-          `\`\`${args.parentId}\`\` is not a valid lobby name 😔\nPlease make sure that the name length is between \`\`1\`\` and \`\`50\`\``
+          `\`\`${args.parentId}\`\` is not a valid lobby name 😔\nPlease make sure that its length is between \`\`1\`\` and \`\`50\`\``
         );
 
       await this.client.lobbies.set(message.guild!.id, args.channelId, {
