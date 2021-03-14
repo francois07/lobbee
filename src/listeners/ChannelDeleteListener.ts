@@ -11,7 +11,7 @@ export default class ChannelDeleteListener extends Listener {
     });
   }
 
-  public exec(channel: DMChannel | GuildChannel): void {
+  public async exec(channel: DMChannel | GuildChannel): Promise<void> {
     if (channel.type !== "voice") return;
     const tempChannel: TemporaryChannelObject = this.client.tempChannels.get(
       channel.guild.id,
@@ -23,11 +23,15 @@ export default class ChannelDeleteListener extends Listener {
       channel.id,
       undefined
     );
-    if (tempChannel) {
-      this.client.tempChannels.delete(channel.guild.id, channel.id);
-    }
-    if (creatorChannel) {
-      this.client.lobbies.delete(channel.guild.id, channel.id);
+    try {
+      if (tempChannel) {
+        await this.client.tempChannels.delete(channel.guild.id, channel.id);
+      }
+      if (creatorChannel) {
+        await this.client.lobbies.delete(channel.guild.id, channel.id);
+      }
+    } catch (e) {
+      throw e;
     }
   }
 }
