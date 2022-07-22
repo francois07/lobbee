@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 
-export default {
+const PingCommand = {
   name: "ping",
   builder: new SlashCommandBuilder()
     .setName("ping")
@@ -16,3 +16,5 @@ export default {
     interaction.reply({ content: str, ephemeral: true });
   },
 };
+
+export default PingCommand;

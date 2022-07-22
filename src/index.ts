@@ -1,11 +1,19 @@
 import { createBelClient } from "discord-bel";
+import redis from "redis";
 
-const { client, commands } = createBelClient(process.env.DISCORD_TOKEN!, {
-  commandsPath: __dirname + "/commands",
-  clientId: process.env.CLIENT_ID!,
+const redisClient = redis.createClient({
+  url: process.env.REDIS_URL!,
 });
 
-client.on("interactionCreate", async (interaction) => {
+const { client: discordClient, commands } = createBelClient(
+  process.env.DISCORD_TOKEN!,
+  {
+    commandsPath: __dirname + "/commands",
+    clientId: process.env.CLIENT_ID!,
+  }
+);
+
+discordClient.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   const { commandName } = interaction;
@@ -17,4 +25,4 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-client.login(process.env.DISCORD_TOKEN!);
+discordClient.login(process.env.DISCORD_TOKEN!);
