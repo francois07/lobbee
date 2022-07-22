@@ -1,0 +1,18 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model channel_creator {
+  channel_creator_id  String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  channel_discord_id  String
+  created_name        String
+  created_max         Int?
+}
