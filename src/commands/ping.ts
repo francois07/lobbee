@@ -13,6 +13,7 @@ const PingCommand = {
     ),
   run: (interaction: ChatInputCommandInteraction) => {
     const str = interaction.options.getString("input");
+    console.log(interaction.options.data);
     interaction.reply({ content: str, ephemeral: true });
   },
 };
