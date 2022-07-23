@@ -1,15 +1,16 @@
 import { createBelClient } from "discord-bel";
-import redis from "redis";
+import { GatewayIntentBits } from "discord.js";
+import { redis } from "./db";
 
-const redisClient = redis.createClient({
-  url: process.env.REDIS_URL!,
-});
+redis.on("error", (err) => console.error(err));
 
 const { client: discordClient, commands } = createBelClient(
   process.env.DISCORD_TOKEN!,
   {
     commandsPath: __dirname + "/commands",
+    listenersPath: __dirname + "/listeners",
     clientId: process.env.CLIENT_ID!,
+    intents: [GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.Guilds],
   }
 );
 
