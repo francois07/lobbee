@@ -15,4 +15,5 @@ model channel_creator {
   channel_discord_id  String
   created_name        String
   created_max         Int?
+  created_numbered    Boolean?
 }
